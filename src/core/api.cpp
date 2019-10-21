@@ -60,6 +60,7 @@
 #include "integrators/sppm.h"
 #include "integrators/volpath.h"
 #include "integrators/whitted.h"
+#include "integrators/field.h"
 #include "lights/diffuse.h"
 #include "lights/distant.h"
 #include "lights/goniometric.h"
@@ -68,6 +69,7 @@
 #include "lights/projection.h"
 #include "lights/spot.h"
 #include "materials/disney.h"
+#include "materials/disney_simple.h"
 #include "materials/fourier.h"
 #include "materials/glass.h"
 #include "materials/hair.h"
@@ -553,6 +555,8 @@ std::shared_ptr<Material> MakeMaterial(const std::string &name,
         material = CreateHairMaterial(mp);
     else if (name == "disney")
         material = CreateDisneyMaterial(mp);
+    else if (name == "disney_simple")
+        material = CreateDisneySimpleMaterial(mp);
     else if (name == "mix") {
         std::string m1 = mp.FindString("namedmaterial1", "");
         std::string m2 = mp.FindString("namedmaterial2", "");
@@ -1691,7 +1695,10 @@ Integrator *RenderOptions::MakeIntegrator() const {
         integrator = CreateAOIntegrator(IntegratorParams, sampler, camera);
     } else if (IntegratorName == "sppm") {
         integrator = CreateSPPMIntegrator(IntegratorParams, camera);
-    } else {
+    } else if (IntegratorName == "field") {
+        integrator = CreateFieldIntegrator(IntegratorParams, sampler, camera);
+    } 
+	else {
         Error("Integrator \"%s\" unknown.", IntegratorName.c_str());
         return nullptr;
     }

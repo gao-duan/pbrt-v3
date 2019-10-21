@@ -82,4 +82,26 @@ void Material::Bump(const std::shared_ptr<Texture<Float>> &d,
                            false);
 }
 
+void Material::NormalMap(const std::shared_ptr<Texture<Spectrum>> &t_n,
+                         SurfaceInteraction *si) {
+    RGBSpectrum v = t_n->Evaluate(*si);
+    v = 2.0f * v - 1.0f;
+    Normal3f new_n = Normalize(Normal3f(v[0], v[1], v[2]));
+
+    Vector3f s = Normalize(si->shading.dpdu);
+	Vector3f t = Normalize(si->shading.dpdv);
+    Vector3f n = Normalize(Vector3f(si->shading.n));
+
+	Normal3f new_n_world(new_n.x * s + new_n.y * t + new_n.z * n);
+    new_n_world = Normalize(new_n_world);
+    si->shading.n = new_n_world;
+    si->shading.dpdu =
+        Normalize(si->shading.dpdu - Vector3f(si->shading.n) *
+                                         Dot(si->shading.n, si->shading.dpdu));
+    si->shading.dpdv = Cross(si->shading.n, si->shading.dpdu);
+    si->SetShadingGeometry(si->shading.dpdu, si->shading.dpdv, si->shading.dndu,
+                           si->shading.dndv,
+                           false);
+}
+
 }  // namespace pbrt

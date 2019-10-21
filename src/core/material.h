@@ -58,6 +58,8 @@ class Material {
     virtual ~Material();
     static void Bump(const std::shared_ptr<Texture<Float>> &d,
                      SurfaceInteraction *si);
+    static void NormalMap(const std::shared_ptr<Texture<Spectrum>> &n,
+                     SurfaceInteraction *si);
 };
 
 }  // namespace pbrt
