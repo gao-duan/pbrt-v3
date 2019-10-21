@@ -363,6 +363,12 @@ ADD_SUBDIRECTORY(src/ext/ptex)
 SET_PROPERTY(TARGET Ptex_static ptxinfo halftest ftest rtest wtest PROPERTY FOLDER "ext")
 INCLUDE_DIRECTORIES ( src/ext/ptex/src/ptex )
 
+
+###########################################################################
+# tinyobjloader
+INCLUDE_DIRECTORIES ( src/ext/tinyobjloader )
+
+
 ###########################################################################
 # On to pbrt...
 

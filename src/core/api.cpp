@@ -101,6 +101,7 @@
 #include "shapes/sphere.h"
 #include "shapes/triangle.h"
 #include "shapes/plymesh.h"
+#include "shapes/objmesh.h"
 #include "textures/bilerp.h"
 #include "textures/checkerboard.h"
 #include "textures/constant.h"
@@ -517,7 +518,11 @@ std::vector<std::shared_ptr<Shape>> MakeShapes(const std::string &name,
             shapes = CreateTriangleMeshShape(object2world, world2object,
                                              reverseOrientation, paramSet,
                                              &*graphicsState.floatTextures);
-    } else if (name == "plymesh")
+    }
+	else if(name == "objmesh")
+		shapes = CreateObjMesh(object2world, world2object, reverseOrientation,
+			paramSet, &*graphicsState.floatTextures);
+	else if (name == "plymesh")
         shapes = CreatePLYMesh(object2world, world2object, reverseOrientation,
                                paramSet, &*graphicsState.floatTextures);
     else if (name == "heightfield")
